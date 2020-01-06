@@ -1,0 +1,12 @@
+
+0) ARCH_IMPO 
+
+  Formato del registro : Bimestre | año | importe.
+
+1) Años cargados en ARCH_IMPO.dat
+   2009,2010,2011
+
+2) El Año cargado en ARCH_CONTRI.dat en todos los registros es 2010
+
+    
+3) Ingresar como año de proceso 2010.
