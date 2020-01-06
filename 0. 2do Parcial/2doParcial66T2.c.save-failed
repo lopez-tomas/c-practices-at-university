@@ -1,0 +1,11 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define DIA 8
+#define SEC 5
+
+int main(){
+
+
+    return 0;
+}
