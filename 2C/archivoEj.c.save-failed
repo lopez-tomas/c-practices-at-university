@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#define CANT 20000
+/*
+    Un banco tiene e larchivo secuencial SALDOS, con los saldos de sus casi 20000 clientes de Caja de Ahorro, al inicio del mes.
+    Cada registro tiene los siguientes datos:
+    - Nro. Caja de Ahorro (int, 6 cifras)
+    - Apellido y nombre (alfanumerico de 30 caracteres)
+*/
+
+typedef struct{
+    int nroCaja; // 6 cifras
+    char apeNom[31];
+    float saldo; //>=0
+}T_Saldos;
+
+typedef struct{
+    int sucursal; // 4 cifras no correlativo
+    int nroCaja;
+    int mes;
+    int dia;
+    int codOp; // 1: deposito (suma al saldo) - 2: extraccion (resta al saldo)
+    float importe; // >0
+}T_Movimientos;
+
+// EJERCICIO 21 DE ARCHIVOS
+int main(){
+    int cantCuentas, vExtracciones[CANT]={0};
+    T_Saldos vSaldos[CANT];
+
+    cantCuentas = cargarVector(vSaldos, CANT);
+
+    Movimientos(vSaldos, vExtracciones, cantCuentas);
+
+    return 0;
+}
+
+int cargaVector(T_Saldos v[], int ce){
+    int i=0;
+    FILE *pf;
+    T_Saldos Saldo;
+
+    pf=fopen("SALDOS.dat","rb");
+    if(pf==NULL){
+        printf("No se pudo abrir el archivo");
+        exit(1);
+    }
+    fread(&Saldo, sizeof(T_Saldos),1,pf);
+    while(!feof(pf) && i<ce){
+        v[i].nroCaja=Saldo.nroCaja;
+        v[i].apeNom=Saldo.apeNom;
+        v[i].saldo=Saldo.saldo;
+        i++;
+
+        fread(&Saldo, sizeof(T_Saldos),1,pf);
+    }
+    return i;
+}
+
+void Movimientos(T_Saldos v[], int vE[], int ce){
+    FILE *aSaldo, *aMovi, *aSinSaldo;
+    T_Saldos Saldo;
+    T_Movimientos SinSaldo;
+    int i=0, cont;
+
+    aSaldo=fopen("SALDOS.DAT","wb");
+    if(aSaldo==NULL){
+        printf("No se pudo abrir/crear el archivo");
+        exit(2);
+    }
+    aMovi=fopen("MOVI.DAT","rb");
+    if(aMovi==NULL){
+        printf("No se pudo abrir el archivo");
+        fclose(aSaldo);
+        exit(3);
+    }
+    aSinSaldo=fopen("SIN_SALDO.DAT","wb");
+    if(aSinSaldo==NULL){
+        printf("No se pudo crear el archivo");
+        fclose(aSaldo);
+        fclose(aMovi);
+        exit(4);
+    }
+
+    fread(&Movi, sizeof(T_Movimientos),1,aMovi);
+    while(!feof(aMovi) && i<ce){
+        cont=0;
+        pos=buscar(v, ce, Movi.nroCaja)
+
+
+        fread(&Movi, sizeof(T_Movimientos),1,aMovi);
+    }
+}
+
+int buscar(T_Saldos v[], int ce, int b){
+    int pos=-1, i=0;
+
+    while(pos==-1 && i<ce){
+        if(v[i].nroCaja==b)
+            pos=i;
+        else
+            i++;
+    }
+    return pos;
+}
